@@ -1608,7 +1608,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             }
             case R.id.button_clr:{
-                if(text_c1=="Undefined !" || text_c1=="Can't Divide By 0 :(" || text_c1=="Math Error :(" || text_c1=="Infinity"){
+                if(text_c1=="Undefined !" || text_c1=="Can't Divide By 0 :(" || text_c1=="Math Error :(" || text_c1=="Infinity" || text_c1.charAt(text_c1.length()-2)=='E' || text_c1.charAt(text_c1.length()-3)=='E'){
                     cur1=0;
                     cur2=0;
                     buf=0;
@@ -2099,37 +2099,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     cur2=0;
                     buf=0;
                     text_c1=text_b;
-                    if(text_c1.length()>8){
+                    int found=0,only_zero=1,index=text_c1.length();
+                    for (int i = 0; i<text_c1.length(); i++){
+                        if(found==1){
+                            if(text_c1.charAt(i)!='0'){
+                                only_zero=0;
+                                break;
+                            }
+                        }
+                        if(text_c1.charAt(i)=='.'){
+                            found=1;
+                            dot=1;
+                            index=i;
+                        }
+                    }
+                    if(only_zero==1){
+                        text_c1=text_c1.substring(0,index);
+                        dot=0;
                         limit=text_c1.length();
                     }
-                    else {
-                        int found=0,only_zero=1,index=text_c1.length();
-                        for (int i = 0; i<text_c1.length(); i++){
-                            if(found==1){
-                                if(text_c1.charAt(i)!='0'){
-                                    only_zero=0;
-                                    break;
-                                }
-                            }
-                            if(text_c1.charAt(i)=='.'){
-                                found=1;
-                                index=i;
-                            }
-                        }
-                        if(found==1){
-                            limit=text_c1.length()-1;
-                        }
-                        else{
-                            limit=text_c1.length();
-                        }
-                        if(only_zero==1){
-                            text_c1=text_c1.substring(0,index);
-                        }
+                    else{
+                        limit=text_c1.length()-1;
                     }
                     text_c2="";
                     text_b="";
                     but="";
-                    dot=0;
                     if(!(text_c1=="Undefined !" || text_c1=="Can't Divide By 0 :(" || text_b=="Math Error :(")) {
                         bin_op_on = 0;
                     }
